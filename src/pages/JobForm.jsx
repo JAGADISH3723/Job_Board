@@ -41,6 +41,7 @@ export default function JobForm({ onCreate }) {
         setStatus(data.error || 'Could not generate description.')
       }
     } catch (error) {
+      console.error(error)
       setStatus('Unable to generate description. Please try again.')
     } finally {
       setGenerating(false)
@@ -67,6 +68,7 @@ export default function JobForm({ onCreate }) {
         setStatus(data.error || 'Could not save job.')
       }
     } catch (error) {
+      console.error(error)
       setStatus('Unable to reach the server. Please try again.')
     }
   }

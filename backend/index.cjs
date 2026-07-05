@@ -37,7 +37,7 @@ app.post('/api/generate-description', async (req, res) => {
   }
 
   try {
-    const OpenAI = require('@openai/openai');
+    const OpenAI = require('openai');
     const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const prompt = `Write a polished job description for a ${type} role titled ${title} at ${company}, located in ${location}. The salary is ${salary || 'competitive'}. Include the following strengths: ${keyPoints || 'team culture, growth, and impact'}.`;
 

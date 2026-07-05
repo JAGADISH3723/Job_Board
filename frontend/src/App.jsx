@@ -9,7 +9,7 @@ function App() {
 
   useEffect(() => {
     axios.get(`${API_URL}/jobs`).then(res => setJobs(res.data));
-  }, []);
+  }, [API_URL]);
 
   return (
     <div className="min-h-screen bg-gray-50">
