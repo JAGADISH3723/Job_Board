@@ -10,7 +10,7 @@ A full-stack **MERN** job board with AI-assisted job descriptions, real-time sea
 
 | Part | URL |
 |------|-----|
-| **Frontend (Vercel)** | _add after deploy_ |
+| **Frontend (Vercel)** | https://mern-job-board-lovat.vercel.app|
 | **Backend API (Render)** | https://job-board-91q8.onrender.com |
 | **Repository** | https://github.com/JAGADISH3723/Job_Board |
 
