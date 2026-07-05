@@ -4,6 +4,7 @@ export default function JobForm({ onCreate }) {
   const [form, setForm] = useState({ title: '', company: '', location: '', salary: '', type: 'Full-time', keyPoints: '', description: '' })
   const [status, setStatus] = useState('')
   const [generating, setGenerating] = useState(false)
+  const [auth, setAuth] = useState({ email: 'demo@jobboard.dev', password: 'demo1234', token: localStorage.getItem('jobboard-token') || '' })
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -48,14 +49,45 @@ export default function JobForm({ onCreate }) {
     }
   }
 
+  const login = async () => {
+    setStatus('Signing in...')
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: auth.email, password: auth.password })
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        setStatus(data.error || 'Login failed')
+        return
+      }
+
+      localStorage.setItem('jobboard-token', data.token)
+      setAuth((prev) => ({ ...prev, token: data.token }))
+      setStatus('Signed in successfully.')
+    } catch (error) {
+      setStatus('Unable to sign in right now.')
+    }
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
+    if (!auth.token) {
+      setStatus('Please sign in first.')
+      return
+    }
+
     setStatus('Saving job...')
 
     try {
       const response = await fetch('/api/jobs', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${auth.token}`
+        },
         body: JSON.stringify(form)
       })
       const data = await response.json()
@@ -81,6 +113,15 @@ export default function JobForm({ onCreate }) {
         <p>Use the form to launch a new listing quickly. Add details and let the board do the rest.</p>
       </div>
 
+      <div className="mb-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+        <div className="mb-2 font-semibold">Demo access</div>
+        <div className="flex flex-wrap gap-3">
+          <input value={auth.email} onChange={(e) => setAuth((prev) => ({ ...prev, email: e.target.value }))} placeholder="Email" className="rounded-xl border border-slate-300 px-3 py-2" />
+          <input type="password" value={auth.password} onChange={(e) => setAuth((prev) => ({ ...prev, password: e.target.value }))} placeholder="Password" className="rounded-xl border border-slate-300 px-3 py-2" />
+          <button type="button" onClick={login} className="rounded-xl bg-slate-950 px-4 py-2 font-semibold text-white">Sign in</button>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className="job-form">
         <div className="grid-two">
           <input name="title" value={form.title} onChange={handleChange} placeholder="Job title" required />
@@ -89,7 +130,7 @@ export default function JobForm({ onCreate }) {
 
         <div className="grid-three">
           <input name="location" value={form.location} onChange={handleChange} placeholder="Location" required />
-          <input name="salary" value={form.salary} onChange={handleChange} placeholder="Salary range" />
+          <input name="salary" value={form.salary} onChange={handleChange} placeholder="Salary range (e.g. 80000-120000)" pattern="\d+(?:\s*-\s*\d+)?" title="Use a number or a numeric range such as 80000-120000" />
           <select name="type" value={form.type} onChange={handleChange}>
             <option>Full-time</option>
             <option>Part-time</option>

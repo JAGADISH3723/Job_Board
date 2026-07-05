@@ -14,16 +14,23 @@
     "test": "vitest run",
     "start": "node backend/index.cjs"
   },
-  "keywords": ["job board", "mern", "ai", "vercel"],
+  "keywords": [
+    "job board",
+    "mern",
+    "ai",
+    "vercel"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "openai": "^4.9.0",
     "axios": "^1.18.1",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.3",
+    "openai": "^4.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
