@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/mern-job-board';
+const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mern-job-board';
 const jwtSecret = process.env.JWT_SECRET || 'dev-secret-change-me';
 
 const UserSchema = new mongoose.Schema({
