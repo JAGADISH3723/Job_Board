@@ -21,7 +21,7 @@ export default function JobForm({ onCreate }) {
     setStatus('Generating job description...')
 
     try {
-      const response = await fetch('https://job-board-91q8.onrender.com/api/generate-description', {
+      const response = await fetch('/api/generate-description', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -52,7 +52,7 @@ export default function JobForm({ onCreate }) {
   const login = async () => {
     setStatus('Signing in...')
     try {
-      const response = await fetch('https://job-board-91q8.onrender.com/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: auth.email, password: auth.password })
@@ -82,7 +82,7 @@ export default function JobForm({ onCreate }) {
     setStatus('Saving job...')
 
     try {
-      const response = await fetch('https://job-board-91q8.onrender.com/api/jobs', {
+      const response = await fetch('/api/jobs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,13 +113,19 @@ export default function JobForm({ onCreate }) {
         <p>Use the form to launch a new listing quickly. Add details and let the board do the rest.</p>
       </div>
 
-      <div className="mb-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
-        <div className="mb-2 font-semibold">Demo access</div>
-        <div className="flex flex-wrap gap-3">
-          <input value={auth.email} onChange={(e) => setAuth((prev) => ({ ...prev, email: e.target.value }))} placeholder="Email" className="rounded-xl border border-slate-300 px-3 py-2" />
-          <input type="password" value={auth.password} onChange={(e) => setAuth((prev) => ({ ...prev, password: e.target.value }))} placeholder="Password" className="rounded-xl border border-slate-300 px-3 py-2" />
-          <button type="button" onClick={login} className="rounded-xl bg-slate-950 px-4 py-2 font-semibold text-white">Sign in</button>
+      <div className="demo-access">
+        <div className="demo-access-head">
+          <span className="demo-access-title">Demo access</span>
+          {auth.token
+            ? <span className="demo-badge demo-badge--on">● Signed in</span>
+            : <span className="demo-badge">Sign in to post a job</span>}
         </div>
+        <div className="demo-access-row">
+          <input value={auth.email} onChange={(e) => setAuth((prev) => ({ ...prev, email: e.target.value }))} placeholder="Email" />
+          <input type="password" value={auth.password} onChange={(e) => setAuth((prev) => ({ ...prev, password: e.target.value }))} placeholder="Password" />
+          <button type="button" onClick={login}>{auth.token ? 'Re-authenticate' : 'Sign in'}</button>
+        </div>
+        <p className="demo-hint">Demo credentials are pre-filled — just click sign in.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="job-form">
