@@ -5,18 +5,18 @@ import path from 'node:path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
-const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+const nodeCommand = process.execPath;
 
 const runs = [
-  { name: 'backend', command: npmCommand, args: ['run', 'backend'] },
-  { name: 'client', command: npmCommand, args: ['run', 'client'] }
+  { name: 'backend', command: nodeCommand, args: ['backend/index.cjs'] },
+  { name: 'client', command: nodeCommand, args: ['node_modules/vite/bin/vite.js'] }
 ];
 
 const procs = runs.map(({ name, command, args }) => {
   const proc = spawn(command, args, {
     cwd: rootDir,
     stdio: ['inherit', 'pipe', 'pipe'],
-    shell: true
+    shell: false
   });
 
   proc.stdout.on('data', data => process.stdout.write(`[${name}] ${data}`));
