@@ -5,7 +5,7 @@ import Navbar from './components/Navbar';
 
 function App() {
   const [jobs, setJobs] = useState([]);
-  const API_URL = import.meta.env.VITE_API_URL || '/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://job-board-91q8.onrender.com';
 
   useEffect(() => {
     axios.get(`${API_URL}/jobs`).then(res => setJobs(res.data));

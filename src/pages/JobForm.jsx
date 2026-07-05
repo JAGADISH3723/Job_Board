@@ -21,7 +21,7 @@ export default function JobForm({ onCreate }) {
     setStatus('Generating job description...')
 
     try {
-      const response = await fetch('/api/generate-description', {
+      const response = await fetch('https://job-board-91q8.onrender.com/api/generate-description', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -52,7 +52,7 @@ export default function JobForm({ onCreate }) {
   const login = async () => {
     setStatus('Signing in...')
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('https://job-board-91q8.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: auth.email, password: auth.password })
@@ -82,7 +82,7 @@ export default function JobForm({ onCreate }) {
     setStatus('Saving job...')
 
     try {
-      const response = await fetch('/api/jobs', {
+      const response = await fetch('https://job-board-91q8.onrender.com/api/jobs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
