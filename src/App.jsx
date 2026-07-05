@@ -6,6 +6,7 @@ import StatsBar from './components/StatsBar'
 import JobDetailsModal from './components/JobDetailsModal'
 import JobForm from './pages/JobForm'
 import FeatureBlock from './pages/FeatureBlock'
+import { apiUrl } from './api'
 
 const features = [
   {
@@ -28,7 +29,11 @@ const features = [
 const getInitialTheme = () => {
   const saved = localStorage.getItem('jobboard-theme')
   if (saved) return saved
-  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  const prefersDark =
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches
+  return prefersDark ? 'dark' : 'light'
 }
 
 const getSavedIds = () => {
@@ -73,7 +78,7 @@ function App() {
     if (type && type !== 'All') params.set('type', type)
     if (location && location !== 'All') params.set('location', location)
 
-    fetch(`/api/jobs?${params.toString()}`)
+    fetch(apiUrl(`/api/jobs?${params.toString()}`))
       .then((res) => res.json())
       .then((data) => setJobs(Array.isArray(data) ? data : []))
       .catch(() => setJobs([]))
@@ -81,14 +86,14 @@ function App() {
   }
 
   const loadStats = () => {
-    fetch('/api/stats')
+    fetch(apiUrl('/api/stats'))
       .then((res) => res.json())
       .then((data) => setStats(data))
       .catch(() => setStats(null))
   }
 
   const loadFilterOptions = () => {
-    fetch('/api/jobs/filters')
+    fetch(apiUrl('/api/jobs/filters'))
       .then((res) => res.json())
       .then((data) => setFilterOptions(data))
       .catch(() => setFilterOptions({ types: [], locations: [] }))

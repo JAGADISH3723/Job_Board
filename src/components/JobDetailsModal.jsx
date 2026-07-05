@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { apiUrl } from '../api'
 
 export default function JobDetailsModal({ job, onClose, onToggleSave, saved }) {
   const [showApply, setShowApply] = useState(false)
@@ -29,7 +30,7 @@ export default function JobDetailsModal({ job, onClose, onToggleSave, saved }) {
     setSubmitting(true)
     setStatus('Submitting your application…')
     try {
-      const res = await fetch(`/api/jobs/${job._id}/apply`, {
+      const res = await fetch(apiUrl(`/api/jobs/${job._id}/apply`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(applicant)
